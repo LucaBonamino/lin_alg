@@ -2,6 +2,14 @@
 name = "linear_algebra"
 version = "0.1.0"
 edition = "2021"
+author = "LucaBonamino"
+description = "A linear algebra package to compute image, kernel and rank of linear applications."
+license = "MIT"
+readme = "README.md"
+repository = "https://github.com/LucaBonamino/linear_algebra"
+homepage = "https://github.com/LucaBonamino/linear_algebra"
+categories = ["linear algebra", "Linear algebra on order 2 - Galois Fields"]
+keywords = ["linera applications", "rank", "image", "kernel", "echelon form"]
 
 [dependencies]
 num-traits = "0.2"
