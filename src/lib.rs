@@ -1,12 +1,6 @@
 mod matrix;
 mod gf2_matrix;
 
-use gf2_matrix::GF2Matrix;
-
-pub fn add(left: u64, right: u64) -> u64 {
-    left + right
-}
-
 #[cfg(test)]
 mod tests {
     use crate::matrix::MatrixTrait;
@@ -34,10 +28,5 @@ mod tests {
         let (_, ops) = mat.echelon_form();
         assert_eq!(ops, vec![(1,0)])
     }
-
-    #[test]
-    fn it_works() {
-        let result = add(2, 2);
-        assert_eq!(result, 4);
-    }
+    
 }
