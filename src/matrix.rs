@@ -1,15 +1,43 @@
 use std::ops::BitXor;
+use num_traits::Zero;
 
-trait UnsignedInteger:
-Copy + Eq + Ord + BitXor<Self> 
+pub trait Number:
+Copy + Eq + Ord + BitXor<Self> + Zero
 {}
 
-pub trait MatrixTraid<T>{
+impl Number for u8 {}
+
+pub trait MatrixTrait<T: Number>: HasElements<T>{
     fn rank(&self)-> usize;
     fn kernel(&self) -> Vec<Vec<T>>;
     fn echelon_form(&self) -> Self;
+    fn ncols(&self) -> usize {
+         self.elements().len()
+    }
+    fn nrows(&self) -> usize {
+        self.elements().get(0).map_or(0, |row| row.len())
+    }
+    fn get_pivot(vec: &Vec<T>) -> Option<usize> {
+         vec.iter().position(|&x| !x.is_zero())
+    }
 }
 
-struct Matrix<T: UnsignedInteger>{
-    elements: Vec<Vec<T>>
+pub trait HasElements<T: Number> {
+    fn elements(&self) -> &Vec<Vec<T>>;
+}
+
+pub struct Matrix<T: Number>{
+    pub elements: Vec<Vec<T>>
+}
+
+impl<T: Number> Matrix<T> {
+    fn new(elements: Vec<Vec<T>>) -> Self{
+        Self { elements}
+    }
+}
+
+impl <T: Number> HasElements<T> for Matrix<T> {
+    fn elements(&self) -> &Vec<Vec<T>> {
+        &self.elements
+    }
 }
