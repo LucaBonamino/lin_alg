@@ -12,6 +12,7 @@ pub trait MatrixTrait<T: Number>: HasElements<T>{
     fn kernel(&self) -> Vec<Vec<T>>;
     fn echelon_form(&self) -> (Self, Vec<(usize, usize)>) where Self: Sized;
     fn image(&self) -> Vec<Vec<T>>;
+    fn is_echelon(&self) -> bool;
     fn ncols(&self) -> usize {
          self.elements().len()
     }
@@ -33,7 +34,7 @@ pub struct Matrix<T: Number>{
 }
 
 impl<T: Number> Matrix<T> {
-    fn new(elements: Vec<Vec<T>>) -> Self{
+    pub fn new(elements: Vec<Vec<T>>) -> Self{
         Self { elements}
     }
 }

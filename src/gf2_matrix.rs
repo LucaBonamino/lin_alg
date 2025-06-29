@@ -1,43 +1,124 @@
 use crate::matrix::{MatrixTrait, Matrix};
 
-type GF2Matrix = Matrix<u8>;
+pub type GF2Matrix = Matrix<u8>;
 
-impl GF2Matrix {
+impl MatrixTrait<u8> for GF2Matrix {
     
 
     fn is_echelon(&self) -> bool{
-        unimplemented!()
+        let nrows = self.nrows();
+        let mut old_piv = 0;
+        for i in 0..nrows{
+            let piv = GF2Matrix::get_pivot(&self.elements[i]);
+            if piv.is_none(){
+                continue;
+            }
+            else {
+                if piv.unwrap() < old_piv{
+                    return false;
+                }
+                old_piv = piv.unwrap();
+                
+            }
+        }
+        return true;
     }
 
-    fn rank_non_echelon_form(&self) -> usize{
+    fn rank(&self) -> usize{
         if self.is_echelon(){
-            return self.rank()
+            return self.rank_echelon_form()
         }
         else {
             let (ech_form, _) = self.echelon_form();
-            return ech_form.rank();   
+            return ech_form.rank_echelon_form();   
         }
 
     }
 
-    fn kernel_non_echelon_form(&self)-> Vec<Vec<u8>>{
+    fn kernel(&self)-> Vec<Vec<u8>>{
         if self.is_echelon(){
-            return self.kernel();
+            return self.kernel_echelon_form();
         }
         else {
             let (ech_form, _) = self.echelon_form();
-            return ech_form.kernel();
+            return ech_form.kernel_echelon_form();
         }
     }
+
+    fn echelon_form(&self) -> (Self, Vec<(usize, usize)>) {
+        let mut m_copy = self.clone();
+        let rows = m_copy.nrows();
+        let cols = m_copy.ncols();
+        let mut operations: Vec<(usize, usize)> = Vec::new();
+        let mut lead = 0;
+
+        for r in 0..rows {
+            if lead >= cols {
+                break;
+            }
+            let mut i = r;
+            while m_copy.elements[i][lead] == 0 {
+                i += 1;
+                if i == rows {
+                    i = r;
+                    lead += 1;
+                    if lead == cols {
+                        return (m_copy, operations);
+                    }
+                }
+            }
+            m_copy.swap_rows(r, i);
+            if r != i {
+                operations.push((r, i));
+                operations.push((i, r));
+                operations.push((r, i));
+            }
+            for i in 0..rows {
+                if i != r && m_copy.elements[i][lead] == 1 {
+                    for j in 0..cols {
+                        m_copy.elements[i][j] = (m_copy.elements[i][j] + m_copy.elements[r][j]) % 2;
+                    }
+                    operations.push((i, r));
+                }
+            }
+            lead += 1;
+        }
+
+        (m_copy, operations)
+    }
+
+    fn get_pivot(row: &Vec<u8>) -> Option<usize> {
+        row.iter().position(|&x| x == 1)
+    }
+
+    fn image(&self) -> Vec<Vec<u8>>{
+        // Compute the echelon form and extract the base of the image from it
+        if self.is_echelon() == false {
+            let (mat, _) = self.echelon_form();
+        }
+        else {
+            let mat = self;
+        }
+
+        let mut image_base: Vec<Vec<u8>> = Vec::new();
+        for i in 0..self.nrows() {
+            let row = self.elements[i].clone();
+            let piv = GF2Matrix::get_pivot(&row);
+            if !piv.is_none() {
+                image_base.push(row);
+            }
+        }
+        image_base
+    }
+
+
+}
+
+impl GF2Matrix  {
 
     fn swap_rows(&mut self, row1: usize, row2: usize) {
         self.elements.swap(row1, row2);
     }
-    
-
-}
-
-impl MatrixTrait<u8> for GF2Matrix  {
 
     fn echelon_form(&self) -> (Self, Vec<(usize, usize)>) {
         let mut m_copy = self.clone();
@@ -89,11 +170,6 @@ impl MatrixTrait<u8> for GF2Matrix  {
         self.elements.len()
     }
 
-    fn image(&self) -> Vec<Vec<u8>>{
-        // Compute the echelon form and extract the base of the image from it
-        unimplemented!()
-    }
-
     fn ncols(&self) -> usize {
         if !self.elements.is_empty() {
             self.elements[0].len()
@@ -102,7 +178,7 @@ impl MatrixTrait<u8> for GF2Matrix  {
         }
     }
 
-    fn rank(&self) -> usize {
+    fn rank_echelon_form(&self) -> usize {
         let mut count = 0;
         let mut pivot_columns = std::collections::HashSet::new();
 
@@ -117,11 +193,8 @@ impl MatrixTrait<u8> for GF2Matrix  {
         count
     }
 
-    /*fn echelon_form(&self) -> Self {
-        unimplemented!()
-    }*/
 
-    fn kernel(&self) -> Vec<Vec<u8>> {
+    fn kernel_echelon_form(&self) -> Vec<Vec<u8>> {
         let rows = self.nrows();
         let cols = self.ncols();
 
