@@ -42,6 +42,11 @@ impl MatrixTrait<u8> for GF2Matrix  {
         self.elements.len()
     }
 
+    fn image(&self) -> Vec<Vec<u8>>{
+        // Compute the echelon form and extract the base of the image from it
+        unimplemented!()
+    }
+
     fn ncols(&self) -> usize {
         if !self.elements.is_empty() {
             self.elements[0].len()
