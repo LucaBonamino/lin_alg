@@ -12,11 +12,11 @@ pub trait MatrixTrait<T: Number>: HasElements<T>{
     fn kernel(&self) -> Vec<Vec<T>>;
     fn echelon_form(&self) -> (Self, Vec<(usize, usize)>) where Self: Sized;
     fn image(&self) -> Vec<Vec<T>>;
-    fn is_echelon(&self) -> bool;
-    fn ncols(&self) -> usize {
+    fn is_reduced_echelon(&self) -> bool;
+    fn nrows(&self) -> usize {
          self.elements().len()
     }
-    fn nrows(&self) -> usize {
+    fn ncols(&self) -> usize {
         self.elements().get(0).map_or(0, |row| row.len())
     }
     fn get_pivot(vec: &Vec<T>) -> Option<usize> {
@@ -28,7 +28,7 @@ pub trait HasElements<T: Number> {
     fn elements(&self) -> &Vec<Vec<T>>;
 }
 
-#[derive(Clone)]
+#[derive(Clone, Debug)]
 pub struct Matrix<T: Number>{
     pub elements: Vec<Vec<T>>
 }
