@@ -56,8 +56,16 @@ mod tests {
         assert_eq!(gf2_matrix::GF2Matrix::new(vec![vec![1,0,0,1], vec![0,1,0,1]]).is_reduced_echelon(), true);
         assert_eq!(gf2_matrix::GF2Matrix::new(vec![vec![1,0,0,0], vec![1,1,0,1], vec![0,0,1,1]]).is_reduced_echelon(), false);
         assert_eq!(gf2_matrix::GF2Matrix::new(vec![vec![1,0,0,0], vec![0,1,0,0], vec![0,0,1,1]]).is_reduced_echelon(), true);
-        assert_eq!(gf2_matrix::GF2Matrix::new(vec![vec![1,0,1,0], vec![0,0,0,0]]).is_reduced_echelon(), true);
         assert_eq!(gf2_matrix::GF2Matrix::new(vec![vec![1,0,0,0], vec![0,1,0,1], vec![0,1,0,1]]).is_reduced_echelon(), false);
+        assert_eq!(gf2_matrix::GF2Matrix::new(vec![vec![1,0,0,0], vec![0,0,0,0], vec![0,1,0,1]]).is_reduced_echelon(), false);
+
+    }
+
+    #[test]
+    fn is_reduced_echelon_zero_row(){
+        assert_eq!(gf2_matrix::GF2Matrix::new(vec![vec![0,0,0,0], vec![1,0,0,0], vec![0,1,0,1]]).is_reduced_echelon(), false);
+        assert_eq!(gf2_matrix::GF2Matrix::new(vec![vec![1,0,0,0], vec![0,0,0,0], vec![0,1,0,1]]).is_reduced_echelon(), false);
+        assert_eq!(gf2_matrix::GF2Matrix::new(vec![vec![1,0,1,0], vec![0,0,0,0]]).is_reduced_echelon(), true);
 
     }
 
@@ -76,6 +84,14 @@ mod tests {
         let mat = gf2_matrix::GF2Matrix::new(vec![vec![1,0,0,0], vec![0,0,0,0]]);
         assert_eq!(mat.image(), vec![vec![1,0,0,0]]);
     
+    }
+
+    #[test]
+    fn kernel(){
+        let mat = gf2_matrix::GF2Matrix::new(vec![vec![1,0,0,0], vec![0,1,0,1]]);
+        assert_eq!(mat.kernel(), vec![vec![0,0,1,0], vec![0,1,0,1]]);
+        let mat = gf2_matrix::GF2Matrix::new(vec![vec![1,0,0,0], vec![0,0,0,0], vec![0,1,0,1]]);
+        assert_eq!(mat.kernel(), vec![vec![0,0,1,0], vec![0,1,0,1]])
     }
 
 }

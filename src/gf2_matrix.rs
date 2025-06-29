@@ -8,14 +8,16 @@ impl MatrixTrait<u8> for GF2Matrix {
     fn is_reduced_echelon(&self) -> bool{
         let nrows = self.nrows();
         let mut old_piv = 0;
+        let mut found_zero_row = false;
         for i in 0..nrows{
             let piv = GF2Matrix::get_pivot(&self.elements[i]);
             match piv {
                 None => {
+                    found_zero_row = true;
                     continue;
                 }
                 Some(piv) => {
-                    if piv < old_piv {
+                    if piv < old_piv || found_zero_row == true {
                         return false;
                     }
                     for j in 0..nrows {
@@ -44,10 +46,12 @@ impl MatrixTrait<u8> for GF2Matrix {
 
     fn kernel(&self)-> Vec<Vec<u8>>{
         if self.is_reduced_echelon(){
+            println!("{:?}", self.elements);
             return self.kernel_echelon_form();
         }
         else {
             let (ech_form, _) = self.echelon_form();
+            println!("{:?}", ech_form);
             return ech_form.kernel_echelon_form();
         }
     }
