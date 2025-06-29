@@ -10,7 +10,7 @@ impl Number for u8 {}
 pub trait MatrixTrait<T: Number>: HasElements<T>{
     fn rank(&self)-> usize;
     fn kernel(&self) -> Vec<Vec<T>>;
-    fn echelon_form(&self) -> Self;
+    fn echelon_form(&self) -> (Self, Vec<(usize, usize)>) where Self: Sized;
     fn image(&self) -> Vec<Vec<T>>;
     fn ncols(&self) -> usize {
          self.elements().len()
@@ -27,6 +27,7 @@ pub trait HasElements<T: Number> {
     fn elements(&self) -> &Vec<Vec<T>>;
 }
 
+#[derive(Clone)]
 pub struct Matrix<T: Number>{
     pub elements: Vec<Vec<T>>
 }

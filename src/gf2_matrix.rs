@@ -14,7 +14,7 @@ impl GF2Matrix {
             return self.rank()
         }
         else {
-            let ech_form = self.echelon_form();
+            let (ech_form, _) = self.echelon_form();
             return ech_form.rank();   
         }
 
@@ -25,14 +25,61 @@ impl GF2Matrix {
             return self.kernel();
         }
         else {
-            let ech_form = self.echelon_form();
+            let (ech_form, _) = self.echelon_form();
             return ech_form.kernel();
         }
     }
 
+    fn swap_rows(&mut self, row1: usize, row2: usize) {
+        self.elements.swap(row1, row2);
+    }
+    
+
 }
 
 impl MatrixTrait<u8> for GF2Matrix  {
+
+    fn echelon_form(&self) -> (Self, Vec<(usize, usize)>) {
+        let mut m_copy = self.clone();
+        let rows = m_copy.nrows();
+        let cols = m_copy.ncols();
+        let mut operations: Vec<(usize, usize)> = Vec::new();
+        let mut lead = 0;
+
+        for r in 0..rows {
+            if lead >= cols {
+                break;
+            }
+            let mut i = r;
+            while m_copy.elements[i][lead] == 0 {
+                i += 1;
+                if i == rows {
+                    i = r;
+                    lead += 1;
+                    if lead == cols {
+                        return (m_copy, operations);
+                    }
+                }
+            }
+            m_copy.swap_rows(r, i);
+            if r != i {
+                operations.push((r, i));
+                operations.push((i, r));
+                operations.push((r, i));
+            }
+            for i in 0..rows {
+                if i != r && m_copy.elements[i][lead] == 1 {
+                    for j in 0..cols {
+                        m_copy.elements[i][j] = (m_copy.elements[i][j] + m_copy.elements[r][j]) % 2;
+                    }
+                    operations.push((i, r));
+                }
+            }
+            lead += 1;
+        }
+
+        (m_copy, operations)
+    }
 
     fn get_pivot(row: &Vec<u8>) -> Option<usize> {
         row.iter().position(|&x| x == 1)
@@ -70,9 +117,9 @@ impl MatrixTrait<u8> for GF2Matrix  {
         count
     }
 
-    fn echelon_form(&self) -> Self {
+    /*fn echelon_form(&self) -> Self {
         unimplemented!()
-    }
+    }*/
 
     fn kernel(&self) -> Vec<Vec<u8>> {
         let rows = self.nrows();
