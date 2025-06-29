@@ -1,5 +1,6 @@
-mod matrix;
-mod gf2_matrix;
+pub mod matrix;
+pub mod gf2_matrix;
+pub use gf2_matrix::GF2Matrix;
 
 #[cfg(test)]
 mod tests {
