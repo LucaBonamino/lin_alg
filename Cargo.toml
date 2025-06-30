@@ -8,7 +8,7 @@ license = "MIT"
 readme = "README.md"
 repository = "https://github.com/LucaBonamino/lin_algebra"
 homepage = "https://github.com/LucaBonamino/lin_algebra"
-categories = ["linear algebra", "Linear algebra on order 2 - Galois Fields"]
+categories = ["mathematics", "cryptography"]
 keywords = ["linear-applications", "rank", "image", "kernel", "echelon-form"]
 
 [dependencies]
