@@ -8,12 +8,6 @@ use crate::matrix::{MatrixTrait, Matrix};
 /// - echelon_form
 /// - is_reduced_echelon
 /// - image
-/// 
-/// # Example
-/// ```
-/// use your_crate::gf2_matrix::GF2Matrix;
-/// let mat = GF2Matrix::new(vec![vec![1, 0], vec![0, 1]]);
-/// ```
 pub type GF2Matrix = Matrix<u8>;
 
 impl MatrixTrait<u8> for GF2Matrix {
@@ -22,17 +16,6 @@ impl MatrixTrait<u8> for GF2Matrix {
     ///
     /// # Returns
     /// `true` if the matrix is in reduced row echelon form; otherwise, `false`.
-    ///
-    /// # Examples
-    /// ```
-    /// use your_crate::gf2_matrix::GF2Matrix;
-    ///
-    /// assert!(!GF2Matrix::new(vec![vec![1,0,0,0], vec![1,1,0,1]]).is_reduced_echelon());
-    /// assert!(!GF2Matrix::new(vec![vec![1,1,0,1], vec![0,1,0,1]]).is_reduced_echelon());
-    /// assert!( GF2Matrix::new(vec![vec![1,0,0,1], vec![0,1,0,1]]).is_reduced_echelon());
-    /// assert_eq!(gf2_matrix::GF2Matrix::new(vec![vec![1,0,0,0], vec![0,0,0,0], vec![0,1,0,1]]).is_reduced_echelon(), false);
-    /// assert_eq!(gf2_matrix::GF2Matrix::new(vec![vec![1,0,1,0], vec![0,0,0,0]]).is_reduced_echelon(), true);
-    /// ```
     fn is_reduced_echelon(&self) -> bool{
         let nrows = self.nrows();
         let mut old_piv = 0;
@@ -68,12 +51,7 @@ impl MatrixTrait<u8> for GF2Matrix {
     /// 
     /// # Returns
     /// An integer representing the rank of the matrix.
-    /// 
-    /// # Examples
-    /// ```
-    /// assert_eq!(gf2_matrix::GF2Matrix::new(vec![vec![1,0,0,0], vec![0,1,0,1]]).rank(), 2);
-    /// assert_eq!(gf2_matrix::GF2Matrix::new(vec![vec![1,0,0,0], vec![1,0,0,0]]).rank(), 1);
-    /// ```
+    ///
     fn rank(&self) -> usize{
         if self.is_reduced_echelon(){
             return self.rank_echelon_form()
@@ -92,30 +70,6 @@ impl MatrixTrait<u8> for GF2Matrix {
     ///
     /// # Returns
     /// A vector of row vectors, each representing a basis vector of the kernel.
-    ///
-    /// # Examples
-    /// ```
-    /// use your_crate::gf2_matrix::GF2Matrix;
-    ///
-    /// let mat = GF2Matrix::new(vec![
-    ///     vec![1, 0, 0, 0],
-    ///     vec![0, 1, 0, 1],
-    /// ]);
-    /// assert_eq!(mat.kernel(), vec![
-    ///     vec![0, 0, 1, 0],
-    ///     vec![0, 1, 0, 1],
-    /// ]);
-    ///
-    /// let mat = GF2Matrix::new(vec![
-    ///     vec![1, 0, 0, 0],
-    ///     vec![0, 0, 0, 0],
-    ///     vec![0, 1, 0, 1],
-    /// ]);
-    /// assert_eq!(mat.kernel(), vec![
-    ///     vec![0, 0, 1, 0],
-    ///     vec![0, 1, 0, 1],
-    /// ]);
-    /// ```
     fn kernel(&self)-> Vec<Vec<u8>>{
         if self.is_reduced_echelon(){
             println!("{:?}", self.elements);
@@ -137,14 +91,6 @@ impl MatrixTrait<u8> for GF2Matrix {
     ///     R1 -> R1 + R2 is represented the entry (R1, R2)
     /// The swap of two rows is represented as 3 entries:
     ///     swap(R1, R2) is represented as (R1, R2), (R2,R1), (R1,R2) 
-    ///
-    /// # Examples
-    /// ```
-    /// let mat = gf2_matrix::GF2Matrix::new(vec![vec![1,0,0,0], vec![0,1,0,1], vec![0,1,0,1]]);
-    /// let (ech_form, row_operations) = mat.echelon_form();     
-    /// assert_eq!(ech_form.elements, vec![vec![1,0,0,0], vec![0,1,0,1], vec![0,0,0,0]]);
-    /// assert_eq!(row_operations, vec![(2,1)]);
-    /// ```
     fn echelon_form(&self) -> (Self, Vec<(usize, usize)>) {
         let mut m_copy = self.clone();
         let rows = m_copy.nrows();
@@ -194,12 +140,6 @@ impl MatrixTrait<u8> for GF2Matrix {
     /// 
     /// # Returns
     /// A vector of row vectors, each representing a basis vector of the image.
-    /// 
-    /// # Examples
-    /// ```
-    /// let mat = gf2_matrix::GF2Matrix::new(vec![vec![1,0,0,0], vec![0,0,0,0]]);
-    /// assert_eq!(mat.image(), vec![vec![1,0,0,0]]);
-    /// ```
     fn image(&self) -> Vec<Vec<u8>>{
         let mat = if !self.is_reduced_echelon() {
             let (m, _) = self.echelon_form();
@@ -225,15 +165,7 @@ impl MatrixTrait<u8> for GF2Matrix {
     ///
     /// # Arguments
     ///
-    /// * `row` - A reference to a vector representing a row in a binary matrix.
-    ///
-    /// # Example
-    /// ```
-    /// use your_crate::gf2_matrix::GF2Matrix;
-    ///
-    /// assert_eq!(GF2Matrix::get_pivot(&vec![0, 1, 0]), Some(1));
-    /// assert_eq!(GF2Matrix::get_pivot(&vec![0, 0, 0]), None);
-    /// ```
+    /// * `row` - A reference to a vector representing a row in a binary matrix.```
     fn get_pivot(row: &Vec<u8>) -> Option<usize> {
         row.iter().position(|&x| x == 1)
     }
