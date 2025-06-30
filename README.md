@@ -1,4 +1,4 @@
-# linear_algebra
+# lin_alg
 A Rust library for linear algebra.
 
 ## Features
