@@ -1,4 +1,4 @@
-# lin_alg
+# lin_algebra
 A Rust library for linear algebra.
 
 ## Features
@@ -9,9 +9,19 @@ All operations are currently implemented for matrices over GF(2):
 - Compute the kernel of the linear application represented by a matrix
 - Compute the image of the linear application represented by a matrix.
 
-### Usage
+## Installation
+
+Add the dependency to your `Cargo.toml`:
+
+```toml
+[dependencies]
+lin_algebra = "0.1.0"
+```
+
+## Usage
 ```Rust
-use linear_algebra::Matrix;
+use lin_algebra::gf2_matrix::GF2Matrix;
+use lin_algebra::matrix::MatrixTrait;
 
 fn main() {
     // Reduces echelon form
