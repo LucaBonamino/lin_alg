@@ -9,7 +9,7 @@ readme = "README.md"
 repository = "https://github.com/LucaBonamino/lin_alg"
 homepage = "https://github.com/LucaBonamino/lin_alg"
 categories = ["linear algebra", "Linear algebra on order 2 - Galois Fields"]
-keywords = ["linera applications", "rank", "image", "kernel", "echelon form"]
+keywords = ["linear applications", "rank", "image", "kernel", "echelon form"]
 
 [dependencies]
 num-traits = "0.2"
