@@ -15,7 +15,7 @@ Add the dependency to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-lin_algebra = "0.1.0"
+lin_algebra = "0.2.0"
 ```
 
 ## Usage
@@ -40,10 +40,10 @@ fn main() {
     println!("Kenel {:?}", gf2_mat.kernel());
 
     // Image
-    println!("Kenel {:?}", gf2_mat.image());
+    println!("Image {:?}", gf2_mat.image());
 
     // Rank
-    println!("Kenel {}", gf2_mat.rank());
+    println!("Rank {}", gf2_mat.rank());
 }
 ```
 
