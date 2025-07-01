@@ -2,7 +2,7 @@
 name = "lin_algebra"
 version = "0.2.1"
 edition = "2021"
-author = "LucaBonamino"
+authors = ["LucaBonamino"]
 description = "A linear algebra package to compute image, kernel and rank of linear applications."
 license = "MIT"
 readme = "README.md"
